@@ -1,0 +1,28 @@
+@startuml
+title Activity Diagram - Input Parameter Nilai (Dosen)
+
+
+partition "<b>Dosen</b>" {
+    start
+  :Login ke sistem;
+  :Masuk menu Parameter Penilaian;
+}
+
+partition "<b>Sistem</b>" {
+  :Tampilkan form input parameter nilai;
+}
+
+partition "<b>Dosen</b>" {
+  :Input bobot nilai (Absensi, Tugas, Progres, UTS, UAS, Proyek);
+}
+partition "<b>Sistem</b>" {
+  :Validasi data;
+  :Simpan ke tabel ParameterNilai;
+  :Konfirmasi parameter berhasil disimpan;
+}
+
+partition "<b>Dosen</b>" {
+    stop
+}
+
+@enduml

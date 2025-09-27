@@ -7,8 +7,6 @@ partition "<b>Dosen</b>" {
   :Masuk menu Data Dosen;
   :Pilih aksi (Create / Read / Update / Delete);
 }
-
-' === CREATE ===
 if (Create?) then (ya)
     partition "<b>Dosen</b>" {
       :Isi form dosen:\n- Name\n- Email\n- Password\n- Password_confirmation\n- NIDN\n- Fakultas;

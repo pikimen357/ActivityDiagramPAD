@@ -1,0 +1,120 @@
+@startuml
+title Activity Diagram - Penilaian dan Absensi(Dosen/Asisten)
+
+
+partition "<b>Dosen/Asisten</b>" {
+    start
+  :Login ke sistem;
+  :Masuk menu Penilaian & Absensi;
+  :Pilih aksi (Penilaian/Absensi);
+}
+
+if (Penilaian) then (ya)
+    partition "<b>Sistem</b>" {
+        :Tampilkan parameter nilai;
+        :Pilih jenis penilaian;
+    }
+    if (Weekly) then (ya)
+        partition "<b>Sistem</b>" {
+            :Tampilkan data 
+            mahasiswa;
+        }
+        partition "<b>Dosen/Asisten</b>" {
+            :Pilih mahasiswa;
+            :Input nilai mingguan (Weekly)
+            & Catatan;
+        }
+        partition "<b>Sistem</b>" {
+            :Validasi data;
+            :Simpan ke 
+            tabel Nilai;
+            :Konfirmasi nilai
+            berhasil disimpan;
+        }
+    elseif (UTS/UAS) then (ya)
+        partition "<b>Sistem</b>" {
+            :Tampilkan data
+            mahasiswa;
+        }
+
+        partition "<b>Dosen/Asisten</b>" {
+            :Pilih mahasiswa;
+        }
+
+        if (Absen Cukup) then (ya)
+            partition "<b>Dosen/Asisten</b>" {
+                :Input nilai UTS/UAS;
+            }
+            partition "<b>Sistem</b>" {
+                :Validasi data;
+                :Simpan ke 
+                tabel Nilai;
+                :Konfirmasi nilai 
+                berhasil disimpan;
+            }
+        else (tidak)
+            partition "<b>Sistem</b>" {
+                :Absen tidak cukup;
+            }
+
+            partition "<b>Dosen/Asisten</b>" {
+                :Notifikasi absen 
+                tidak cukup;
+            }
+        endif
+    else if (Proyek) then (ya)
+        partition "<b>Sistem</b>" {
+            :Tampilkan data
+             kelompok Proyek;
+        }
+        partition "<b>Dosen/Asisten</b>" {
+            :Pilih proyek;
+            :Input nilai Proyek
+            & Catatan;
+        }
+        partition "<b>Sistem</b>" {
+            :Validasi data;
+            :Simpan ke tabel Nilai;
+            :Konfirmasi nilai
+             berhasil disimpan;
+        }
+    
+    endif
+elseif (Absensi) 
+    partition "<b>Sistem</b>" {
+        :Tampilkan data mahasiswa;
+    }
+
+    partition "<b>Dosen/Asisten</b>"{
+        :Pilih mahasiswa;
+        :Input absensi 
+        (Hadir, Sakit, Izin, Alfa) 
+        & Keterangan;
+    }
+
+    partition "<b>Sistem</b>" {
+        :Simpan ke tabel Absensi;
+        :Konfirmasi absensi 
+        berhasil disimpan;
+    }
+
+endif
+
+' partition "<b>Sistem</b>" {
+'   :Tampilkan form input parameter nilai;
+' }
+
+' partition "<b>Dosen</b>" {
+'   :Input bobot nilai (Absensi, Tugas, Progres, UTS, UAS, Proyek);
+' }
+' partition "<b>Sistem</b>" {
+'   :Validasi data;
+'   :Simpan ke tabel ParameterNilai;
+'   :Konfirmasi parameter berhasil disimpan;
+' }
+
+partition "<b>Dosen/Asisten</b>" {
+    stop
+}
+
+@enduml
