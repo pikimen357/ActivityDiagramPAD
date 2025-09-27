@@ -1,7 +1,7 @@
 @startuml
 title Activity Diagram - CRUD Proyek & Pembagian Kelompok
 
-partition "Dosen/Asisten" {
+partition "<b>Dosen/Asisten</b>" {
   start
   :Login ke sistem;
   :Masuk menu Proyek/Kelompok;
@@ -9,75 +9,78 @@ partition "Dosen/Asisten" {
 
 ' === CRUD PROYEK Horizontal ===
 split
-  :Create Proyek;
-    partition "Dosen/Asisten" {
-        :Isi form proyek (Nama, Deskripsi, Semester, Tahun Ajaran);
-    }
-    partition "Sistem" {
-        :Validasi data;
-        :Simpan ke tabel Projects;
-    }
-    partition "Dosen/Asisten" {
-        :Konfirmasi proyek berhasil ditambahkan;
-    }
-split again
-  :Read Proyek;
-    partition "Sistem" {
-        :Ambil daftar proyek dari tabel Projects;
-    }
-    partition "Dosen/Asisten" {
-        :Tampilkan daftar proyek;
-        :Lihat detail proyek;
-    }
-split again
-  :Update Proyek;
-    partition "Dosen/Asisten" {
-        :Pilih proyek;
-        :Edit data proyek (Nama, Deskripsi, Semester, Tahun Ajaran);
-    }
-    partition "Sistem" {
-        :Validasi data;
-        :Update tabel Projects;
-    }
-    partition "Dosen/Asisten" {
-        :Konfirmasi update berhasil;
-    }
-split again
-  :Delete Proyek;
-    partition "Dosen/Asisten" {
-        :Pilih proyek;
-        :Konfirmasi penghapusan;
-    }
-    partition "Sistem" {
-        :Cek apakah proyek memiliki kelompok aktif?;
-        if (Ada kelompok?) then (ya)
-          :Hapus semua anggota kelompok dari tabel Group_members;
-          :Hapus semua kelompok dari tabel Groups;
-        endif
-        :Hapus proyek dari tabel Projects;
-    }
-    partition "Dosen/Asisten" {
-        :Konfirmasi penghapusan berhasil;
-    }
+    if (Create?) then (ya)
+        partition "<b>Dosen/Asisten</b>" {
+            :Isi form proyek:
+            - Nama Proyek
+            - Deskripsi
+            - Semester
+            - Tahun Ajaran;
+        }
+        partition "<b>Sistem</b>" {
+            :Validasi data;
+            :Simpan ke tabel Projects;
+        }
+        partition "<b>Dosen/Asisten</b>" {
+            :Konfirmasi proyek \nberhasil ditambahkan;
+        }
+    
+    elseif (Read?) then (ya)
+        partition "<b>Sistem</b>" {
+            :Ambil daftar proyek dari tabel Projects;
+        }
+        partition "<b>Dosen/Asisten</b>" {
+            :Tampilkan daftar proyek;
+            :Lihat detail proyek;
+        }
+ 
+    
+    elseif (Update?) then (ya)
 
-endsplit
+        partition "<b>Dosen/Asisten</b>" {
+            :Pilih proyek;
+            :Edit data proyek\n (Nama, Deskripsi, Semester, Tahun Ajaran);
+        }
+        partition "<b>Sistem</b>" {
+            :Validasi data;
+            :Update tabel Projects;
+        }
+        partition "<b>Dosen/Asisten</b>" {
+            :Konfirmasi update berhasil;
+        }
+    elseif (Delete?) then (ya)
+        partition "<b>Dosen/Asisten</b>" {
+            :Pilih proyek;
+            :Konfirmasi penghapusan;
+        }
+        partition "<b>Sistem</b>" {
+            :Cek apakah proyek\n memiliki kelompok aktif?;
+            if (Ada kelompok?) then (ya)
+            :Error "Proyek memiliki\n kelompok aktif";
+            endif
+            :Hapus proyek dari tabel Projects;
+        }
+        partition "<b>Dosen/Asisten</b>" {
+            :Konfirmasi penghapusan berhasil;
+        }
+endif
 
 
 ' === PEMBAGIAN KELOMPOK (Vertical Flow) ===
-partition "Dosen/Asisten" {
+partition "<b>Dosen/Asisten</b>" {
   :Pilih proyek untuk pembagian;
   :Klik "Buat Kelompok Baru";
   :Isi nama kelompok;
 }
-partition "Sistem" {
+partition "<b>Sistem</b>" {
   :Simpan ke tabel Groups;
   :Generate group_id;
 }
-partition "Dosen/Asisten" {
+partition "<b>Dosen/Asisten</b>" {
   :Pilih "Tambah Anggota";
   :Pilih mahasiswa (maks 4 orang);
 }
-partition "Sistem" {
+partition "<b>Sistem</b>" {
   repeat
     :Cek apakah mahasiswa sudah di kelompok lain?;
     if (Sudah?) then (ya)
@@ -90,12 +93,12 @@ partition "Sistem" {
   repeat while (Masih ada mahasiswa dipilih?) is (ya)
   -> tidak;
 }
-partition "Dosen/Asisten" {
+partition "<b>Dosen/Asisten</b>" {
   :Konfirmasi anggota berhasil ditambahkan;
   :Lihat daftar kelompok & anggota;
 }
 
-partition "Dosen/Asisten" {
+partition "<b>Dosen/Asisten</b>" {
   stop
 }
 @enduml

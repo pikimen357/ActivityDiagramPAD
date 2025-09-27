@@ -1,21 +1,21 @@
 @startuml
-title Activity Diagram - CRUD Asisten(dosen)
+title Activity Diagram - CRUD Dosen
 
 partition "<b>Dosen</b>" {
   start
   :Login ke sistem;
-  :Masuk menu Data Asisten;
+  :Masuk menu Data Dosen;
   :Pilih aksi (Create / Read / Update / Delete);
 }
 
 ' === CREATE ===
 if (Create?) then (ya)
     partition "<b>Dosen</b>" {
-      :Isi form asisten:\n- Name\n- Email\n- Password\n- Password_confirmation\n- Tahun Ajaran\n- NIM;
+      :Isi form dosen:\n- Name\n- Email\n- Password\n- Password_confirmation\n- NIDN\n- Fakultas;
     }
     partition "<b>Sistem</b>" {
       :Validasi data;
-      :Simpan ke tabel Asisten;
+      :Simpan ke tabel Dosen;
     }
     partition "<b>Dosen</b>" {
       :Konfirmasi berhasil;
@@ -24,23 +24,23 @@ if (Create?) then (ya)
 
 elseif (Read?) then (ya)
   partition "<b>Sistem</b>" {
-    :Ambil daftar asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+    :Ambil daftar dosen \n(Name, Email, Password, Password_confirmation, NIDN, Fakultas);
   }
   partition "<b>Dosen</b>" {
-    :Lihat data asisten;
+    :Lihat data dosen;
   }
 
 elseif (Update?) then (ya)
   partition "<b>Sistem</b>" {
-    :Ambil daftar asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+    :Ambil daftar dosen \n(Name, Email, Password, Password_confirmation, NIDN, Fakultas);
   }
   partition "<b>Dosen</b>" {
-    :Pilih asisten;
-    :Edit data asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+    :Pilih Dosen;
+    :Edit data dosen \n(Name, Email, Password, Password_confirmation, NIDN, Fakultas);
   }
   partition "<b>Sistem</b>" {
     :Validasi data;
-    :Update tabel Asisten;
+    :Update tabel Dosen;
   }
   partition "<b>Dosen</b>" {
     :Konfirmasi berhasil;
@@ -48,13 +48,13 @@ elseif (Update?) then (ya)
 
 elseif (Delete?) then (ya)
   partition "<b>Sistem</b>" {
-    :Ambil daftar asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+    :Ambil daftar dosen \n(Name, Email, Password, Password_confirmation, NIDN, Fakultas);
   }
   partition "<b>Dosen</b>" {
-    :Pilih asisten;
+    :Pilih dosen;
   }
   partition "<b>Sistem</b>" {
-    :Hapus record dari tabel Asisten;
+    :Hapus record dari tabel Dosen;
   }
   partition "<b>Dosen</b>" {
     :Konfirmasi berhasil;
