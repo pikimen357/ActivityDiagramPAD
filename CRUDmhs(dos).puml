@@ -1,0 +1,84 @@
+@startuml
+title Activity Diagram - CRUD Mahasiswa(dosen)
+
+partition "<b>Dosen</b>" {
+  start
+  :Login ke sistem;
+  :Masuk menu Data Mahasiswa;
+  :Pilih aksi (Create / Read / Update / Delete);
+}
+
+' === CREATE ===
+if (Create?) then (ya)
+  partition "<b>Dosen</b>" {
+    :Pilih metode input (Manual / Excel);
+  }
+  
+  if (Manual?) then (ya)
+    partition "<b>Dosen</b>" {
+      :Isi form mahasiswa:\n- Name\n- Email\n- Password\n- Password_confirmation\n- NIM\n- Angkatan\n- Prodi\n- Jabatan('PM', 'UI/UX', 'BE', 'FE');
+    }
+    partition "<b>Sistem</b>" {
+      :Validasi data;
+      :Simpan ke tabel Mahasiswa;
+    }
+    partition "<b>Dosen</b>" {
+      :Konfirmasi berhasil;
+    }
+  else (Excel)
+    partition "<b>Dosen</b>" {
+      :Upload file Excel (berisi data mahasiswa);
+    }
+    partition "<b>Sistem</b>" {
+      :Validasi format file;
+      :Import data ke tabel Mahasiswa;
+    }
+    partition "<b>Dosen</b>" {
+      :Tampilkan hasil import;
+    }
+  endif
+
+elseif (Read?) then (ya)
+  partition "<b>Sistem</b>" {
+    :Ambil daftar mahasiswa \n(Name, Email, Password, Password_confirmation, NIM, Angkatan, Prodi, Jabatan);
+  }
+  partition "<b>Dosen</b>" {
+    :Lihat data mahasiswa;
+  }
+
+elseif (Update?) then (ya)
+  partition "<b>Sistem</b>" {
+    :Ambil daftar mahasiswa \n(Name, Email, Password, Password_confirmation, NIM, Angkatan, Prodi, Jabatan);
+  }
+  partition "<b>Dosen</b>" {
+    :Pilih mahasiswa;
+    :Edit data mahasiswa \n(Name, Email, Password, Password_confirmation, NIM, Angkatan, Prodi, Jabatan);
+  }
+  partition "<b>Sistem</b>" {
+    :Validasi data;
+    :Update tabel Mahasiswa;
+  }
+  partition "<b>Dosen</b>" {
+    :Konfirmasi berhasil;
+  }
+
+elseif (Delete?) then (ya)
+  partition "<b>Sistem</b>" {
+    :Ambil daftar mahasiswa \n(Name, Email, Password, Password_confirmation, NIM, Angkatan, Prodi, Jabatan);
+  }
+  partition "<b>Dosen</b>" {
+    :Pilih mahasiswa;
+  }
+  partition "<b>Sistem</b>" {
+    :Hapus record dari tabel Mahasiswa;
+  }
+  partition "<b>Dosen</b>" {
+    :Konfirmasi berhasil;
+  }
+
+endif
+
+partition "<b>Dosen</b>" {
+  stop
+}
+@enduml

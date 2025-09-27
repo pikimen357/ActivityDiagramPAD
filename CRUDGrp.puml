@@ -1,0 +1,101 @@
+@startuml
+title Activity Diagram - CRUD Proyek & Pembagian Kelompok
+
+partition "Dosen/Asisten" {
+  start
+  :Login ke sistem;
+  :Masuk menu Proyek/Kelompok;
+}
+
+' === CRUD PROYEK Horizontal ===
+split
+  :Create Proyek;
+    partition "Dosen/Asisten" {
+        :Isi form proyek (Nama, Deskripsi, Semester, Tahun Ajaran);
+    }
+    partition "Sistem" {
+        :Validasi data;
+        :Simpan ke tabel Projects;
+    }
+    partition "Dosen/Asisten" {
+        :Konfirmasi proyek berhasil ditambahkan;
+    }
+split again
+  :Read Proyek;
+    partition "Sistem" {
+        :Ambil daftar proyek dari tabel Projects;
+    }
+    partition "Dosen/Asisten" {
+        :Tampilkan daftar proyek;
+        :Lihat detail proyek;
+    }
+split again
+  :Update Proyek;
+    partition "Dosen/Asisten" {
+        :Pilih proyek;
+        :Edit data proyek (Nama, Deskripsi, Semester, Tahun Ajaran);
+    }
+    partition "Sistem" {
+        :Validasi data;
+        :Update tabel Projects;
+    }
+    partition "Dosen/Asisten" {
+        :Konfirmasi update berhasil;
+    }
+split again
+  :Delete Proyek;
+    partition "Dosen/Asisten" {
+        :Pilih proyek;
+        :Konfirmasi penghapusan;
+    }
+    partition "Sistem" {
+        :Cek apakah proyek memiliki kelompok aktif?;
+        if (Ada kelompok?) then (ya)
+          :Hapus semua anggota kelompok dari tabel Group_members;
+          :Hapus semua kelompok dari tabel Groups;
+        endif
+        :Hapus proyek dari tabel Projects;
+    }
+    partition "Dosen/Asisten" {
+        :Konfirmasi penghapusan berhasil;
+    }
+
+endsplit
+
+
+' === PEMBAGIAN KELOMPOK (Vertical Flow) ===
+partition "Dosen/Asisten" {
+  :Pilih proyek untuk pembagian;
+  :Klik "Buat Kelompok Baru";
+  :Isi nama kelompok;
+}
+partition "Sistem" {
+  :Simpan ke tabel Groups;
+  :Generate group_id;
+}
+partition "Dosen/Asisten" {
+  :Pilih "Tambah Anggota";
+  :Pilih mahasiswa (maks 4 orang);
+}
+partition "Sistem" {
+  repeat
+    :Cek apakah mahasiswa sudah di kelompok lain?;
+    if (Sudah?) then (ya)
+      :Blur pada nama mahasiswa;
+      :Kembali ke pemilihan mahasiswa;
+    else (belum)
+      : Pilih mahasiswa;
+      :Simpan ke tabel Group_members\n (user_id, group_id, role);
+    endif
+  repeat while (Masih ada mahasiswa dipilih?) is (ya)
+  -> tidak;
+}
+partition "Dosen/Asisten" {
+  :Konfirmasi anggota berhasil ditambahkan;
+  :Lihat daftar kelompok & anggota;
+}
+
+partition "Dosen/Asisten" {
+  stop
+}
+@enduml

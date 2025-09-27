@@ -1,0 +1,71 @@
+@startuml
+title Activity Diagram - CRUD Asisten(dosen)
+
+partition "<b>Dosen</b>" {
+  start
+  :Login ke sistem;
+  :Masuk menu Data Asisten;
+  :Pilih aksi (Create / Read / Update / Delete);
+}
+
+' === CREATE ===
+if (Create?) then (ya)
+  partition "<b>Dosen</b>" {
+    :Pilih metode input (Manual / Excel);
+  }
+    partition "<b>Dosen</b>" {
+      :Isi form asisten:\n- Name\n- Email\n- Password\n- Password_confirmation\n- Tahun Ajaran\n- NIM;
+    }
+    partition "<b>Sistem</b>" {
+      :Validasi data;
+      :Simpan ke tabel Asisten;
+    }
+    partition "<b>Dosen</b>" {
+      :Konfirmasi berhasil;
+    }
+
+
+elseif (Read?) then (ya)
+  partition "<b>Sistem</b>" {
+    :Ambil daftar asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+  }
+  partition "<b>Dosen</b>" {
+    :Lihat data asisten;
+  }
+
+elseif (Update?) then (ya)
+  partition "<b>Sistem</b>" {
+    :Ambil daftar asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+  }
+  partition "<b>Dosen</b>" {
+    :Pilih asisten;
+    :Edit data mahasiswa \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+  }
+  partition "<b>Sistem</b>" {
+    :Validasi data;
+    :Update tabel Asisten;
+  }
+  partition "<b>Dosen</b>" {
+    :Konfirmasi berhasil;
+  }
+
+elseif (Delete?) then (ya)
+  partition "<b>Sistem</b>" {
+    :Ambil daftar asisten \n(Name, Email, Password, Password_confirmation, Tahun Ajaran, NIM);
+  }
+  partition "<b>Dosen</b>" {
+    :Pilih asisten;
+  }
+  partition "<b>Sistem</b>" {
+    :Hapus record dari tabel Asisten;
+  }
+  partition "<b>Dosen</b>" {
+    :Konfirmasi berhasil;
+  }
+
+endif
+
+partition "<b>Dosen</b>" {
+  stop
+}
+@enduml
