@@ -9,16 +9,19 @@ partition "<b>Dosen</b>" {
 }
 
 partition "<b>Sistem</b>" {
-  :Tampilkan form input parameter nilai;
+  :Tampilkan form input
+   parameter nilai (popup);
 }
 
 partition "<b>Dosen</b>" {
-  :Input bobot nilai (Absensi, Tugas, Progres, UTS, UAS, Proyek);
+  :Input bobot nilai 
+  (Absensi, Tugas, Progres, UTS, UAS, Proyek);
 }
 partition "<b>Sistem</b>" {
   :Validasi data;
   :Simpan ke tabel ParameterNilai;
-  :Konfirmasi parameter berhasil disimpan;
+  :Konfirmasi parameter
+  berhasil disimpan;
 }
 
 partition "<b>Dosen</b>" {

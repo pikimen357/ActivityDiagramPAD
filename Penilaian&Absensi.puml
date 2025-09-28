@@ -11,13 +11,17 @@ partition "<b>Dosen/Asisten</b>" {
 
 if (Penilaian) then (ya)
     partition "<b>Sistem</b>" {
-        :Tampilkan parameter nilai;
-        :Pilih jenis penilaian;
+        :Tampilkan jenis penilaian;
+    }
+    partition "<b>Dosen/Asisten</b>" {
+        :Pilih jenis penilaian ;
     }
     if (Weekly) then (ya)
         partition "<b>Sistem</b>" {
             :Tampilkan data 
             mahasiswa;
+            :Tampilkan parameter 
+            nilai;
         }
         partition "<b>Dosen/Asisten</b>" {
             :Pilih mahasiswa;
@@ -35,6 +39,7 @@ if (Penilaian) then (ya)
         partition "<b>Sistem</b>" {
             :Tampilkan data
             mahasiswa;
+            :Tampilkan parameter nilai;
         }
 
         partition "<b>Dosen/Asisten</b>" {
@@ -80,9 +85,21 @@ if (Penilaian) then (ya)
         }
     
     endif
+
 elseif (Absensi) 
+
     partition "<b>Sistem</b>" {
-        :Tampilkan data mahasiswa;
+        :Tampilkan form 
+        input tanggal;
+    }
+
+    partition "<b>Dosen/Asisten</b>" {
+        :Pilih tanggal;
+    }
+
+    partition "<b>Sistem</b>" {
+        :Tampilkan data 
+        mahasiswa;
     }
 
     partition "<b>Dosen/Asisten</b>"{
@@ -100,18 +117,23 @@ elseif (Absensi)
 
 endif
 
-' partition "<b>Sistem</b>" {
-'   :Tampilkan form input parameter nilai;
-' }
+' ==== Tambahan Validasi Nilai Akhir ====
+partition "<b>Sistem</b>" {
+    :Tampilkan rekap nilai akhir;
+}
+partition "<b>Dosen</b>" {
+    :Review & Validasi nilai akhir;
+}
+if (Nilai Oke?) then (ya)
+    partition "<b>Dosen/Asisten</b>" {
+        stop
+    }
+else (tidak)
+    partition "<b>Asisten</b>" {
+        :Revisi nilai sesuai instruksi dosen;
+    }
 
-' partition "<b>Dosen</b>" {
-'   :Input bobot nilai (Absensi, Tugas, Progres, UTS, UAS, Proyek);
-' }
-' partition "<b>Sistem</b>" {
-'   :Validasi data;
-'   :Simpan ke tabel ParameterNilai;
-'   :Konfirmasi parameter berhasil disimpan;
-' }
+endif
 
 partition "<b>Dosen/Asisten</b>" {
     stop
